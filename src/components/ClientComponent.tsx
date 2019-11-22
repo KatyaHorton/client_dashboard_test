@@ -19,13 +19,13 @@ export const ClientComponent = () => {
           disabled={!context.gameOn}
           onClick={() => context.onClick(true)}
         >
-          {context.orangeData.clicks}
+          {context.orangeData.length - 1}
         </button>
         <button
           disabled={!context.gameOn}
           onClick={() => context.onClick(false)}
         >
-          {context.blueData.clicks}
+          {context.blueData.length - 1}
         </button>
       </div>
 
