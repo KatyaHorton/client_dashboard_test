@@ -2,8 +2,8 @@ import * as React from "react";
 import { BrowserRouter as Router, Link, Switch } from "react-router-dom";
 import { Route } from "react-router-dom";
 
-import { DashboardComponent } from "./components/DashboardComponent";
-import { ClientComponent } from "./components/ClientComponent";
+import { DashboardComponent } from "./components/DashboardComponent.tsx";
+import { ClientComponent } from "./components/ClientComponent.tsx";
 
 function App() {
   return (
