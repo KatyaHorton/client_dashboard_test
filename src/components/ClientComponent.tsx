@@ -9,14 +9,25 @@ export const ClientComponent = () => {
     <article>
       <header>Client</header>
       <div>
-        <button onClick={context.startGame}>Start game</button>
+        <button disabled={context.gameOn} onClick={context.startGame}>
+          Start game
+        </button>
       </div>
-      {context.gameOn && (
-        <div>
-          <button>{context.orangeClicks}</button>
-          <button>{context.blueClicks}</button>
-        </div>
-      )}
+
+      <div>
+        <button
+          disabled={!context.gameOn}
+          onClick={() => context.onClick(true)}
+        >
+          {context.orangeData.length - 1}
+        </button>
+        <button
+          disabled={!context.gameOn}
+          onClick={() => context.onClick(false)}
+        >
+          {context.blueData.length - 1}
+        </button>
+      </div>
 
       <footer>
         Client for <em>Clicks Game</em>
