@@ -2,15 +2,15 @@ import * as React from "react";
 import { BrowserRouter as Router, Link, Switch } from "react-router-dom";
 import { Route } from "react-router-dom";
 
-import { DashboardComponent } from "./components/DashboardComponent.tsx";
-import { ClientComponent } from "./components/ClientComponent.tsx";
+import { DashboardComponent } from "./components/DashboardComponent";
+import { ClientComponent } from "./components/ClientComponent";
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route path="/client">
-          <ClientComponent name="Katya" />
+          <ClientComponent name="Mark" />
         </Route>
         <Route path="/dashboard">
           <DashboardComponent />
