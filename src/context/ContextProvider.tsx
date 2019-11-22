@@ -63,9 +63,15 @@ export const ContextProvider = ({ children }: ProviderProps) => {
     setGameOn(true);
     setStartTime(Date.now());
     setTimeout(() => setGameOn(false), 5000);
+
     setOrangeData([{ clicks: 0, time: 0 }]);
     setBlueData([{ clicks: 0, time: 0 }]);
   };
+
+  React.useEffect(() => {
+    generateResult(orangeData);
+    generateResult(blueData);
+  }, [gameOn]);
 
   const setClickTime = () => {
     let time;
@@ -96,7 +102,6 @@ export const ContextProvider = ({ children }: ProviderProps) => {
     console.log("result", result);
   };
 
-  generateResult(orangeData);
   return (
     <Context.Provider
       value={{
