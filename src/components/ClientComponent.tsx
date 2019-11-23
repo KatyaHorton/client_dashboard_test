@@ -5,6 +5,8 @@ import { Context, AppContextInterface } from "../context/ContextProvider.tsx";
 export const ClientComponent = () => {
   const context = React.useContext<AppContextInterface>(Context);
 
+  console.log("orange data from context", context.orangeData);
+
   return (
     <article>
       <header>Client</header>
@@ -16,16 +18,30 @@ export const ClientComponent = () => {
 
       <div>
         <button
+          style={{
+            backgroundColor: "orange",
+            color: "white",
+            width: "100px",
+            height: "100px",
+            borderRadius: "50%"
+          }}
           disabled={!context.gameOn}
           onClick={() => context.onClick(true)}
         >
-          {context.orangeData.length - 1}
+          {context.orangeClicks.length - 1}
         </button>
         <button
+          style={{
+            backgroundColor: "blue",
+            color: "white",
+            width: "100px",
+            height: "100px",
+            borderRadius: "50%"
+          }}
           disabled={!context.gameOn}
           onClick={() => context.onClick(false)}
         >
-          {context.blueData.length - 1}
+          {context.blueClicks.length - 1}
         </button>
       </div>
 

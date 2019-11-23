@@ -6,8 +6,10 @@ export interface ClicksData {
 }
 
 export interface AppContextInterface {
-  orangeData: ClicksData[];
-  blueData: ClicksData[];
+  orangeData: ClicksData[] | [];
+  blueData: ClicksData[] | [];
+  orangeClicks: number[];
+  blueClicks: number[];
   gameOn: boolean;
   startGame: () => void;
   onClick: (isOrange: boolean) => void;
@@ -50,7 +52,9 @@ export const Context = React.createContext<AppContextInterface>({
   startGame: () => {},
   onClick: (isOrange: boolean) => {},
   blueData: blueDataReceived,
-  orangeData: orangeDataReceived
+  orangeData: orangeDataReceived,
+  orangeClicks: [0],
+  blueClicks: [0]
 });
 
 export const ContextProvider = ({ children }: ProviderProps) => {
@@ -58,19 +62,20 @@ export const ContextProvider = ({ children }: ProviderProps) => {
   const [startTime, setStartTime] = React.useState(0);
   const [orangeData, setOrangeData] = React.useState(orangeDataReceived);
   const [blueData, setBlueData] = React.useState(blueDataReceived);
+  const [orangeClicks, setOrangeClicks] = React.useState([0]);
+  const [blueClicks, setBlueClicks] = React.useState([0]);
 
   const startGame = () => {
     setGameOn(true);
     setStartTime(Date.now());
     setTimeout(() => setGameOn(false), 5000);
-
-    setOrangeData([{ clicks: 0, time: 0 }]);
-    setBlueData([{ clicks: 0, time: 0 }]);
+    setOrangeClicks([0]);
+    setBlueClicks([0]);
   };
 
   React.useEffect(() => {
-    generateResult(orangeData);
-    generateResult(blueData);
+    !gameOn && generateResult(orangeClicks, setOrangeData);
+    !gameOn && generateResult(blueClicks, setBlueData);
   }, [gameOn]);
 
   const setClickTime = () => {
@@ -83,30 +88,52 @@ export const ContextProvider = ({ children }: ProviderProps) => {
 
   const setData = (isOrange: boolean) => {
     isOrange
-      ? setOrangeData([...orangeData, { clicks: 1, time: setClickTime() }])
-      : setBlueData([...blueData, { clicks: 1, time: setClickTime() }]);
+      ? setOrangeClicks([...orangeClicks, setClickTime()])
+      : setBlueClicks([...blueClicks, setClickTime()]);
   };
   // @ts-ignore
-  const generateResult = arr => {
+  const generateResult = (arr, fn) => {
     const timeArray = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
-    // @ts-ignore
-    const result = arr.filter(obj => {
-      // @ts-ignore
-      let smth;
-      smth = timeArray.map(num => {
-        return obj.time === num;
-      });
-      return smth;
-    });
 
-    console.log("result", result);
+    // @ts-ignore
+    let grouped = arr.reduce((r, v, i, a) => {
+      if (v === a[i - 1]) {
+        r[r.length - 1].push(v);
+      } else {
+        r.push(v === a[i + 1] ? [v] : v);
+      }
+      return r;
+    }, []);
+
+    const result = timeArray.map(time => {
+      // @ts-ignore
+      let resultArray = {};
+      // @ts-ignore
+      let found = grouped.find(element => {
+        return element[0] === time;
+      });
+
+      if (found) {
+        resultArray = { time: time, clicks: found.length };
+      } else {
+        resultArray = { time: time, clicks: 0 };
+      }
+      // @ts-ignore
+      return resultArray;
+    });
+    fn(result);
+    console.log("game not on and log: ", result);
   };
+
+  // console.log("orangeData", orangeData);
 
   return (
     <Context.Provider
       value={{
         orangeData: orangeData,
         blueData: blueData,
+        orangeClicks: orangeClicks,
+        blueClicks: blueClicks,
         startGame: startGame,
         onClick: setData,
         gameOn: gameOn

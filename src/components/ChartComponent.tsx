@@ -13,21 +13,23 @@ export const ChartComponent = () => {
   const dataReceivedOrange = context.orangeData;
   let dataReceivedBlue = context.blueData;
 
-  const useDataOrange = dataReceivedOrange.map((item: ClicksData) => {
-    return {
-      x: item.time,
-      y: item.clicks
-    };
-  });
-  const useDataBlue = dataReceivedBlue.map((item: ClicksData) => {
-    return {
-      x: item.time,
-      y: item.clicks
-    };
-  });
-
-  console.log("useDataBlue", useDataOrange);
-
+  const useDataOrange =
+    // @ts-ignore
+    dataReceivedOrange.map((item: ClicksData) => {
+      return {
+        x: item.time,
+        y: item.clicks
+      };
+    });
+  const useDataBlue =
+    // @ts-ignore
+    dataReceivedBlue.map((item: ClicksData) => {
+      return {
+        x: item.time,
+        y: item.clicks
+      };
+    });
+  // @ts-ignore
   const [data, setData] = React.useState({
     labels: ["0", "0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5"],
     datasets: [
